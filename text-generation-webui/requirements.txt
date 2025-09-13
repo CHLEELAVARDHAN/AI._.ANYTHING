@@ -13,5 +13,5 @@ scipy
 sentencepiece
 torch
 torchvision
-transformers==4.33.2
+transformers==4.53.0
 uvicorn
