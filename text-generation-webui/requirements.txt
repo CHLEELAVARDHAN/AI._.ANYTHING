@@ -1,0 +1,17 @@
+accelerate==0.21.0
+bitsandbytes==0.41.0
+datasets
+fastapi==0.99.1
+gradio==3.41.2
+markdown
+numpy
+peft
+psutil
+pydantic<2
+safetensors
+scipy
+sentencepiece
+torch
+torchvision
+transformers==4.33.2
+uvicorn
