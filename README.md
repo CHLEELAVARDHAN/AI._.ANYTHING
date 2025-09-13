@@ -29,8 +29,8 @@ Built using **React (frontend), Node.js/Express (backend), MongoDB (database), a
 
 1️⃣Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/AI-Chat-Mood-Analyzer.git
-cd AI-Chat-Mood-Analyzer
+git clone https://github.com/CHLEELAVARDHAN/AI._.ANYTHING.git
+cd AI. _.ANYTHING
 
 2️⃣Install_Dependencies
 
@@ -52,7 +52,6 @@ Create".env"_in_backend:
 PORT=5000
 MONGO_URI=your_mongodb_uri
 GOOGLE_API_KEY=your_gemini_api_key
-
 
 Create .env in frontend if needed:
 
