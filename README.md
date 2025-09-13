@@ -1,4 +1,4 @@
-# Advance AI & Mood Analyzer
+ē# Advance AI & Mood Analyzer
 
 An advanced AI-powered assistant project with **real-time chat, mood detection, and file analysis** features.  
 Built using **React (frontend), Node.js/Express (backend), MongoDB (database), and Google Gemini API (AI)**.
@@ -62,7 +62,7 @@ REACT_APP_BACKEND_URL=http://localhost:5000
 Backend:
 
 cd backend
-npm start
+node server.js
 
 
 Frontend:
