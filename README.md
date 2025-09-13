@@ -30,7 +30,7 @@ Built using **React (frontend), Node.js/Express (backend), MongoDB (database), a
 1️⃣Clone the Repository
 ```bash
 git clone https://github.com/CHLEELAVARDHAN/AI._.ANYTHING.git
-cd AI. _.ANYTHING
+cd AI._.ANYTHING
 
 2️⃣Install_Dependencies
 
