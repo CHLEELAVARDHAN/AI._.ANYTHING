@@ -1,4 +1,4 @@
-ē# Advance AI & Mood Analyzer
+# Advance AI & Mood Analyzer
 
 An advanced AI-powered assistant project with **real-time chat, mood detection, and file analysis** features.  
 Built using **React (frontend), Node.js/Express (backend), MongoDB (database), and Google Gemini API (AI)**.
