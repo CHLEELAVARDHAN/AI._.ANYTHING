@@ -1,0 +1,10 @@
+{
+  "name": "AI._.ANYTHING",
+  "description": "The ultimate AI assistant with advanced multimodal capabilities, professional UI/UX, and blockchain-secured history.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}

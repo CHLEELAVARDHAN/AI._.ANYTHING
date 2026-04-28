@@ -1,0 +1,73 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 0.1 Context-Aware Helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // 1. Users Collection
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.keys().hasAll(['username']) && request.resource.data.username is string && request.resource.data.username.size() <= 50;
+      allow update: if isOwner(userId) && (
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['username', 'fullName', 'dob', 'address', 'phone']) &&
+        (request.resource.data.get('username', '') is string && request.resource.data.username.size() <= 50) &&
+        (request.resource.data.get('fullName', '') is string && request.resource.data.fullName.size() <= 100)
+      );
+    }
+
+    // 2. Settings Collection
+    match /settings/{userId} {
+      allow get: if isOwner(userId);
+      allow create, update: if isOwner(userId) && request.resource.data.keys().hasAny(['systemInstruction', 'themeColor', 'searchEngine', 'cursorSize', 'isDark']);
+    }
+
+    // 3. Sessions Collection
+    match /sessions/{sessionId} {
+      allow get: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.keys().hasAll(['userId', 'title', 'createdAt']) &&
+        request.resource.data.title is string && request.resource.data.title.size() <= 200;
+      allow update: if isSignedIn() && 
+        resource.data.userId == request.auth.uid &&
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title']) &&
+        request.resource.data.title is string && request.resource.data.title.size() <= 200;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // 4. History Collection
+    match /history/{messageId} {
+      allow get: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && 
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.keys().hasAll(['userId', 'sessionId', 'role', 'content', 'timestamp']) &&
+        request.resource.data.role in ['user', 'assistant'] &&
+        get(/databases/$(database)/documents/sessions/$(request.resource.data.sessionId)).data.userId == request.auth.uid;
+      allow update: if isSignedIn() && 
+        resource.data.userId == request.auth.uid &&
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['content', 'parentHash', 'editedAt']) &&
+        request.resource.data.content is string && request.resource.data.content.size() <= 10000;
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User public and private profile data",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string" },
+        "fullName": { "type": "string" },
+        "dob": { "type": "string" },
+        "address": { "type": "string" },
+        "phone": { "type": "string" }
+      },
+      "required": ["username"]
+    },
+    "Setting": {
+      "title": "User Settings",
+      "description": "Personalized application settings",
+      "type": "object",
+      "properties": {
+        "systemInstruction": { "type": "string" },
+        "themeColor": { "type": "string" },
+        "searchEngine": { "type": "string" },
+        "cursorSize": { "type": "number" },
+        "isDark": { "type": "boolean" }
+      }
+    },
+    "Session": {
+      "title": "Chat Session",
+      "description": "A conversation thread",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["userId", "title", "createdAt"]
+    },
+    "Message": {
+      "title": "Chat Message",
+      "description": "Individual message in a history",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "sessionId": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "assistant"] },
+        "content": { "type": "string" },
+        "hash": { "type": "string" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["userId", "sessionId", "role", "content", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Stores user profile information, keyed by UID."
+    },
+    "/settings/{userId}": {
+      "schema": "Setting",
+      "description": "Stores user application settings, keyed by UID."
+    },
+    "/sessions/{sessionId}": {
+      "schema": "Session",
+      "description": "Stores individual chat sessions."
+    },
+    "/history/{messageId}": {
+      "schema": "Message",
+      "description": "Stores individual messages from all sessions."
+    }
+  }
+}
